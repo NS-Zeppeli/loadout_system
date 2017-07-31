@@ -25,8 +25,7 @@ button.Paint = function ( s , w , h )
 	draw.RoundedBox(0,0,0,w,h,Color(255,255,255)) 
 end
 
-function PlayerLoadout( ply )
-	ply:Give( "weapon_pistol" )
+function PlayerLoadout
 	frame:CloseDermaMenus()
 	return true
 end
@@ -39,4 +38,40 @@ label:SetText("CHOOSE YOUR WEAPON")
 	Se a saida no console pelos valores
 	for amarela = Client side
 	se for azul = server side
+
+
+net.Receive( "TestNetworkingEntitiesToClient", function( len )
+	// Do something
+	local _frame = vgui.Create( "DFrame" );
+	_frame:SetSize( 500, 500 );
+	_frame:Center( );
+	_frame:SetVisible( true );
+	_frame:MakePopup( );
+end )
 ]]
+
+function WeaponSelectorDerma()
+local WeaponFrame = vgui.Create("DFrame") --create a frame
+WeaponFrame:SetSize(250, 80) --set its size
+WeaponFrame:Center() --position it at the center of the screen
+WeaponFrame:SetTitle("Take the weapon that you want") --set the title of the menu 
+WeaponFrame:SetDraggable(true) --can you move it around
+WeaponFrame:SetSizable(false) --can you resize it?
+WeaponFrame:ShowCloseButton(true) --can you close it
+WeaponFrame:MakePopup() --make it appear
+ 
+local PistolButton = vgui.Create("DButton", WeaponFrame)
+PistolButton:SetSize(100, 30)
+PistolButton:SetPos(10, 35)
+PistolButton:SetText("Pistol")
+PistolButton.DoClick = function() RunConsoleCommand("weapon_take", "pistol") WeaponFrame:Close() end --make it run our "weapon_take" console command with "pistol" as the 1st argument and then close the menu
+ 
+local SMGButton = vgui.Create("DButton", WeaponFrame)
+SMGButton:SetSize(100, 30)
+SMGButton:SetPos(140, 35)
+SMGButton:SetText("SMG") --Set the name of the button
+SMGButton.DoClick = function() RunConsoleCommand("weapon_take", "smg") WeaponFrame:Close() end
+end
+ 
+concommand.Add("selectweapon", WeaponSelectorDerma) --make the console command to make this menu popup
+ 
